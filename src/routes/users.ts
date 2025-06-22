@@ -9,8 +9,10 @@ const router = express.Router();
 // GET /api/users
 router.get('/', authenticateToken, (req: AuthRequest, res) => {
   const { page = '1', limit = '10', search, team_id, role } = req.query;
+
+  const isAdmin = req.user?.role === 'ADMIN';
   
-  let filteredUsers = users.filter(u => u.is_active);
+  let filteredUsers = users.filter(u => isAdmin ? true : u.is_active);
 
   // Apply filters
   if (search) {

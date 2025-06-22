@@ -7,7 +7,8 @@ const router = express.Router();
 
 // GET /api/teams
 router.get('/', authenticateToken, (req: AuthRequest, res) => {
-  const teamsWithDetails = teams.filter(t => t.is_active).map(team => {
+  const isAdmin = req.user?.role === 'ADMIN';
+  const teamsWithDetails = teams.filter(t => isAdmin ? true : t.is_active).map(team => {
     const memberCount = users.filter(u => u.team_id === team.id && u.is_active).length;
     const teamLead = users.find(u => u.id === team.team_lead_id);
     
@@ -35,7 +36,8 @@ router.get('/', authenticateToken, (req: AuthRequest, res) => {
 router.get('/:id/members', authenticateToken, (req: AuthRequest, res) => {
   const { id } = req.params;
   
-  const team = teams.find(t => t.id === id && t.is_active);
+  const isAdmin = req.user?.role === 'ADMIN';
+  const team = teams.find(t => t.id === id && (isAdmin ? true : t.is_active));
   if (!team) {
     const response: ApiResponse<null> = {
       success: false,
