@@ -225,11 +225,35 @@ router.put('/:id', authenticateToken, (req: AuthRequest, res) => {
   }
 
   if (priority && priority !== task.priority) {
+    // Only admin/team lead can change priority
+    if (isAssignee && !isAdminOrTeamLead) {
+      const response: ApiResponse<null> = {
+        success: false,
+        error: {
+          code: 'FORBIDDEN',
+          message: 'Only admin or team lead can change task priority'
+        }
+      };
+      return res.status(403).json(response);
+    }
+
     changes.push({field: 'priority', oldValue: task.priority, newValue: priority});
     task.priority = priority;
   }
 
   if (assignee_id !== undefined && assignee_id !== task.assignee_id) {
+    // Only admin/team lead can change assignee
+    if (isAssignee && !isAdminOrTeamLead) {
+      const response: ApiResponse<null> = {
+        success: false,
+        error: {
+          code: 'FORBIDDEN',
+          message: 'Only admin or team lead can change task assignee'
+        }
+      };
+      return res.status(403).json(response);
+    }
+
     let assignee = null;
     if (assignee_id) {
       assignee = users.find(u => u.id === assignee_id && u.is_active);
@@ -262,6 +286,18 @@ router.put('/:id', authenticateToken, (req: AuthRequest, res) => {
   }
 
   if (due_date !== undefined) {
+    // Only admin/team lead can change due date
+    if (isAssignee && !isAdminOrTeamLead) {
+      const response: ApiResponse<null> = {
+        success: false,
+        error: {
+          code: 'FORBIDDEN',
+          message: 'Only admin or team lead can change task due date'
+        }
+      };
+      return res.status(403).json(response);
+    }
+
     changes.push({field: 'due_date', oldValue: task.due_date, newValue: due_date});
     task.due_date = due_date;
   }
