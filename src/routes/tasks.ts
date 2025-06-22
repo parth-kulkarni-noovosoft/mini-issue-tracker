@@ -178,8 +178,11 @@ router.put('/:id', authenticateToken, (req: AuthRequest, res) => {
   const task = tasks[taskIndex];
   const user = users.find(u => u.id === req.user!.id);
 
+  const isAdminOrTeamLead = req.user?.role === 'ADMIN' || req.user?.role === 'TEAM_LEAD';
+  const isAssignee = task.assignee_id === req.user!.id;
+
   // Check permissions - only assignee, team lead, or admin can update
-  if (task.assignee_id !== req.user!.id && !['TEAM_LEAD', 'ADMIN'].includes(req.user!.role)) {
+  if (!isAssignee && !isAdminOrTeamLead) {
     const response: ApiResponse<null> = {
       success: false,
       error: {
@@ -196,7 +199,10 @@ router.put('/:id', authenticateToken, (req: AuthRequest, res) => {
   // Update fields if provided
   if (status && status !== task.status) {
     // Validate status transition
-    const validTransitions: Record<string, string[]> = {
+    const validTransitions: Record<string, string[]> = isAssignee ? {
+      'TODO': ['IN_PROGRESS'],
+      'IN_PROGRESS': ['IN_REVIEW', 'TODO'],
+    } : {
       'TODO': ['IN_PROGRESS'],
       'IN_PROGRESS': ['IN_REVIEW', 'TODO'],
       'IN_REVIEW': ['DONE', 'IN_PROGRESS'],

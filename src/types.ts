@@ -51,7 +51,6 @@ export interface Comment {
   user_name: string;
   content: string;
   is_edited: boolean;
-  is_system_comment: boolean;
   created_at: string;
   updated_at?: string;
 }

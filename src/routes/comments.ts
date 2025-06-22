@@ -8,7 +8,7 @@ const router = express.Router();
 // POST /api/tasks/:taskId/comments
 router.post('/:taskId/comments', authenticateToken, (req: AuthRequest, res) => {
   const { taskId } = req.params;
-  const { content, is_system_comment } = req.body;
+  const { content } = req.body;
 
   // Validation
   if (!content || content.trim().length === 0) {
@@ -46,7 +46,6 @@ router.post('/:taskId/comments', authenticateToken, (req: AuthRequest, res) => {
     content: content.trim(),
     is_edited: false,
     created_at: getCurrentTimestamp(),
-    is_system_comment: is_system_comment || false
   };
 
   comments.push(newComment);

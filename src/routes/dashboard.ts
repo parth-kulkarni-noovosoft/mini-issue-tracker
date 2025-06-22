@@ -1,5 +1,5 @@
 import express from 'express';
-import { tasks, users, comments, taskHistory, getCurrentTimestamp } from '../data';
+import { tasks, comments, taskHistory } from '../data';
 import { authenticateToken, AuthRequest } from '../auth';
 import { ApiResponse, DashboardStats, UserStats, TeamStats, RecentActivity } from '../types';
 
