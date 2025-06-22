@@ -1,0 +1,12 @@
+services:
+  issue-tracker-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: issue-tracker-system-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped 
