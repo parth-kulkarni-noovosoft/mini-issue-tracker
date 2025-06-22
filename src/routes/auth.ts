@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import { users, getUserWithTeamName } from '../data';
+import { users } from '../data';
 import { generateToken, authenticateToken, AuthRequest } from '../auth';
 import { ApiResponse, AuthUser, PublicUser } from '../types';
 

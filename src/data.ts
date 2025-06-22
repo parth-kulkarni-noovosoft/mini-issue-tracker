@@ -31,30 +31,3 @@ export const generateId = (prefix: string): string => {
 export const getCurrentTimestamp = (): string => {
   return new Date().toISOString();
 };
-
-// Helper function to get user with team name
-export const getUserWithTeamName = (userId: string) => {
-  const user = users.find(u => u.id === userId);
-  if (!user) return null;
-
-  const team = teams.find(t => t.id === user.team_id);
-  return {
-    ...user,
-    team_name: team?.name
-  };
-};
-
-// Helper function to get team with member count
-export const getTeamWithDetails = (teamId: string) => {
-  const team = teams.find(t => t.id === teamId);
-  if (!team) return null;
-
-  const memberCount = users.filter(u => u.team_id === teamId && u.is_active).length;
-  const teamLead = users.find(u => u.id === team.team_lead_id);
-
-  return {
-    ...team,
-    member_count: memberCount,
-    team_lead_name: teamLead?.name
-  };
-}; 
