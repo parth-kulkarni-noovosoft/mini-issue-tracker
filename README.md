@@ -1,6 +1,6 @@
 # Issue Tracker System
 
-A comprehensive issue tracking system with task management, team collaboration, and real-time updates via WebSocket. Built with Express.js, TypeScript, and in-memory data storage.
+A comprehensive issue tracking system with task management, team collaboration. Built with Express.js, TypeScript, and in-memory data storage.
 
 ## Quick Start
 
